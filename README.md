@@ -16,26 +16,31 @@ The is a script to be used to add [Cloudflare](https://www.cloudflare.com/) as a
 1. Download `cloudflareddns.sh` from this repository to `/sbin/cloudflareddns.sh`
 
 ```
-wget https://raw.githubusercontent.com/joshuaavalon/SynologyCloudflareDDNS/master/cloudflareddns.sh -O /sbin/cloudflareddns.sh
+sudo wget https://raw.githubusercontent.com/FaceAce1/SynologyCloudflareDDNS/master/cloudflareddns.sh -O /sbin/cloudflareddns.sh
 ```
 
 It is not a must, you can put I whatever you want. If you put the script in other name or path, make sure you use the right path.
 
-2. Give others execute permission
+2.Turn off the automatic opening of "CDN": The script will set the "Proxy Status" to "ture" by default, but you may not want to do this, so you can use the command to modify line 6 in the script so that the proxy status will not be automatically opened.
+```
+sudo sed -i 's/proxy="true"/proxy="false"/' /sbin/cloudflareddns.sh
+```
+
+3. Give others execute permission
 
 ```
-chmod +x /sbin/cloudflareddns.sh
+sudo chmod +x /sbin/cloudflareddns.sh
 ```
 
-3. Add `cloudflareddns.sh` to Synology
+4. Add `cloudflareddns.sh` to Synology
 
 ```
-cat >> /etc.defaults/ddns_provider.conf << 'EOF'
+sudo sh -c "cat >> /etc.defaults/ddns_provider.conf << EOF
 [Cloudflare]
         modulepath=/sbin/cloudflareddns.sh
         queryurl=https://www.cloudflare.com
         website=https://www.cloudflare.com
-E*.
+EOF"
 ```
 
 `queryurl` does not matter because we are going to use our script but it is needed.
